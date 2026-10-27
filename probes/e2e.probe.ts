@@ -39,7 +39,7 @@ async function newPage(width = 1440, height = 900): Promise<Page> {
 		// The PDF route DELIBERATELY answers 422 for Tamil and Hindi rosters, and the browser
 		// logs every non-2xx fetch. That expected response is asserted in its own test, so it
 		// is not a defect here.
-		if (text.includes('422 (Unprocessable Entity)')) return;
+		if (/status of 422\b/.test(text)) return;
 		consoleErrors.push(`${page.url()} :: ${text}`);
 	});
 	page.on('pageerror', (e) => consoleErrors.push(`${page.url()} :: ${e.message}`));
