@@ -137,6 +137,16 @@ export async function buildRosterPdf(request: PdfRequest): Promise<Uint8Array> {
 	// file is missing from the bundle, so the route still returns a usable PDF.
 	const regularBytes = await readFontFile('inter-regular');
 	const boldBytes = await readFontFile('inter-bold');
+	// `subset: true` is correct ONLY with the faces built by scripts/build-pdf-fonts.mjs
+	// from the pinned @fontsource .woff sources. Do not swap these TTFs for arbitrary ones.
+	//
+	// With TTFs from another source, pdf-lib produced two different broken results:
+	//   subset: true  -> pdf.js rendered zero ink, i.e. completely invisible text
+	//   subset: false -> text rendered, but the ToUnicode CMap was wrong and the text layer
+	//                    extracted "07:00-15:00" as "07Ů00Ŝ15Ů00", breaking copy-paste,
+	//                    search and screen-reader output
+	// `probes/pdf-render.probe.ts` rasterises page 1 and reads the text layer back, so a
+	// regression in either direction fails the suite rather than shipping silently.
 	const regular = regularBytes
 		? await doc.embedFont(regularBytes, { subset: true })
 		: await doc.embedFont(StandardFonts.Helvetica);
@@ -228,7 +238,11 @@ function drawGridPage(
 	const colW = gridW / request.days.length;
 	const headerH = 22;
 	const rows = request.staffOrder.length || 1;
-	const rowH = Math.max(16, Math.min(40, (top - headerH - bottom) / rows));
+	// Fill the available height: with only a few staff the grid would otherwise sit in a
+	// short band at the top of an otherwise empty landscape page. Rows still collapse to a
+	// 16 pt floor for a large team, and the cap keeps a 2-person roster from looking absurd.
+	const available = top - headerH - bottom;
+	const rowH = Math.max(16, Math.min(56, available / rows));
 
 	// Day headers
 	for (const [index, day] of request.days.entries()) {
@@ -322,8 +336,15 @@ function drawGridPage(
 					height: chipH - 1,
 					color: hexToRgb(shift.templateColour)
 				});
-				const text = `${shift.start}-${shift.end}${shift.overnight ? '+1' : ''} ${shift.role}`;
-				page.drawText(fit(text, regular, 7, colW - 10), {
+				// The role is dropped before the time is truncated: the time range is the piece
+				// a manager actually reads off the grid, and the role is already implied by the
+				// shift. `fit` then guarantees nothing spills past the cell border.
+				const time = `${shift.start}-${shift.end}${shift.overnight ? '+1' : ''}`;
+				const full = `${time} ${shift.role}`;
+				const maxTextW = colW - 10;
+				const text =
+					regular.widthOfTextAtSize(full, 7) <= maxTextW ? full : fit(time, regular, 7, maxTextW);
+				page.drawText(text, {
 					x: x + 6,
 					y: cy + chipH / 2 - 3.2,
 					size: 7,
