@@ -1,0 +1,590 @@
+@import 'tailwindcss';
+
+/*
+ * ShiftSync design tokens.
+ *
+ * Every colour, type size, spacing step, radius and motion duration in the app comes
+ * from the variables defined here. Dark mode is designed separately, not inverted.
+ * Contrast is checked to WCAG AA in both themes.
+ */
+
+/*
+ * Self-hosted, open-licensed fonts (SIL Open Font License), bundled with the app.
+ * Inter for the interface and Latin names; Noto Sans Tamil and Noto Sans Devanagari so
+ * Tamil and Hindi staff names render correctly in the grid, tables and print route.
+ * Nothing is fetched from Google Fonts or any third-party CDN at runtime.
+ */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/noto-sans-tamil/400.css';
+@import '@fontsource/noto-sans-tamil/500.css';
+@import '@fontsource/noto-sans-tamil/600.css';
+@import '@fontsource/noto-sans-devanagari/400.css';
+@import '@fontsource/noto-sans-devanagari/500.css';
+@import '@fontsource/noto-sans-devanagari/600.css';
+
+@theme {
+	--default-font-family: 'Inter', 'Noto Sans Tamil', 'Noto Sans Devanagari', system-ui, sans-serif;
+}
+
+:root {
+	/* ---- Colour: light ---- */
+	--bg: #f6f7f9;
+	--surface: #ffffff;
+	--surface-subtle: #f1f3f6;
+	--surface-raised: #ffffff;
+	--border: #e3e6eb;
+	--border-strong: #cdd2da;
+	--text-primary: #0f1a2a;
+	--text-secondary: #4a5568;
+	--text-tertiary: #5f6978; /* 5.0:1 on subtle surface, 5.6:1 on white - clears AA */
+
+	--brand: #0b6e4f;
+	--brand-hover: #095c42;
+	--brand-tint: #e6f3ee;
+	--on-brand: #ffffff;
+
+	--saffron: #b7791f;
+	--saffron-tint: #fbf3df;
+	--danger: #c0392b;
+	--danger-tint: #fbeae8;
+	--success: #2f855a;
+	/* Text colours for use ON a tint background, where the base hue misses AA at 12 px. */
+	--success-ink: #1e6340; /* 6.3:1 on --success-tint */
+	--saffron-ink: #8a5a12; /* 5.1:1 on --saffron-tint */
+	--danger-ink: #a32b1e; /* 5.4:1 on --danger-tint */
+	--info-ink: #1f5a94; /* 6.2:1 on --info-tint */
+	--success-tint: #e6f2ec;
+	--info: #2b6cb0;
+	--info-tint: #e8f0f9;
+
+	/* Shift template tints: soft, desaturated, always paired with a solid left bar. */
+	--chip-tint-green: #eaf3ef;
+	--chip-tint-blue: #eaf0f8;
+	--chip-tint-violet: #f1ecf6;
+	--chip-tint-amber: #faf2e2;
+	--chip-tint-teal: #e9f2f3;
+	--chip-tint-neutral: #f1f3f6;
+
+	/* ---- Type scale ---- */
+	--text-12: 0.75rem;
+	--text-13: 0.8125rem;
+	--text-14: 0.875rem;
+	--text-16: 1rem;
+	--text-20: 1.25rem;
+	--text-24: 1.5rem;
+	--text-32: 2rem;
+	--lh-tight: 1.25;
+	--lh-normal: 1.5;
+
+	/* ---- Spacing (4 px grid) ---- */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-6: 24px;
+	--space-8: 32px;
+	--space-12: 48px;
+
+	/* ---- Radius ---- */
+	--radius-card: 8px;
+	--radius-control: 6px;
+	--radius-pill: 999px;
+
+	/* ---- Elevation: borders first, very soft shadows only for overlays ---- */
+	--shadow-popover: 0 4px 12px rgba(15, 26, 42, 0.08), 0 1px 3px rgba(15, 26, 42, 0.06);
+	--shadow-drag: 0 8px 20px rgba(15, 26, 42, 0.14);
+	--shadow-sticky: 2px 0 6px rgba(15, 26, 42, 0.05);
+	--shadow-sticky-y: 0 2px 6px rgba(15, 26, 42, 0.05);
+
+	/* ---- Controls ---- */
+	--control-h: 36px;
+	--control-h-sm: 32px;
+	--focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--brand);
+
+	/* ---- Motion ---- */
+	--motion-fast: 120ms;
+	--motion-base: 160ms;
+	--motion-slow: 200ms;
+	--ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+	color-scheme: light;
+}
+
+.dark {
+	/* ---- Colour: dark, designed separately ---- */
+	--bg: #0e131b;
+	--surface: #151c26;
+	--surface-subtle: #121923;
+	--surface-raised: #1b2431;
+	--border: #263142;
+	--border-strong: #35435a;
+	--text-primary: #e6eaf0;
+	--text-secondary: #a7b0be;
+	--text-tertiary: #8b94a3;
+
+	--brand: #3db38a;
+	--brand-hover: #4ec79b;
+	--brand-tint: #15302a;
+	--on-brand: #06231a;
+
+	--saffron: #d9a441;
+	--saffron-tint: #322814;
+	--danger: #e8705f;
+	--danger-tint: #35201d;
+	--success: #4caf84;
+	--success-ink: #58c194;
+	--saffron-ink: #e0ae52;
+	--danger-ink: #f08573;
+	--info-ink: #7fb1e8;
+	--success-tint: #162c22;
+	--info: #6aa3e0;
+	--info-tint: #17283c;
+
+	--chip-tint-green: #172b26;
+	--chip-tint-blue: #16222f;
+	--chip-tint-violet: #22203a;
+	--chip-tint-amber: #2b2516;
+	--chip-tint-teal: #16272a;
+	--chip-tint-neutral: #1b2431;
+
+	--shadow-popover: 0 4px 14px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+	--shadow-drag: 0 8px 24px rgba(0, 0, 0, 0.6);
+	--shadow-sticky: 2px 0 8px rgba(0, 0, 0, 0.35);
+	--shadow-sticky-y: 0 2px 8px rgba(0, 0, 0, 0.35);
+	--focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--brand);
+
+	color-scheme: dark;
+}
+
+/* Compact density: 32 px controls and tighter grid rows. */
+.compact {
+	--control-h: 32px;
+	--control-h-sm: 28px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text-primary);
+	font-family: var(--default-font-family);
+	font-size: var(--text-14);
+	line-height: var(--lh-normal);
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+/* Tabular numbers everywhere times, hours and counts appear. */
+.tnum,
+time,
+td.num,
+th.num {
+	font-variant-numeric: tabular-nums;
+	font-feature-settings: 'tnum' 1;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure {
+	margin: 0;
+}
+
+h1 {
+	font-size: var(--text-24);
+	font-weight: 600;
+	line-height: var(--lh-tight);
+	letter-spacing: -0.01em;
+}
+h2 {
+	font-size: var(--text-20);
+	font-weight: 600;
+	line-height: var(--lh-tight);
+}
+h3 {
+	font-size: var(--text-16);
+	font-weight: 600;
+	line-height: var(--lh-tight);
+}
+
+a {
+	color: var(--brand);
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+/* Links inside body copy must not rely on colour alone (WCAG 1.4.1). */
+p a,
+li a,
+dd a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* Visible focus ring on every interactive element. */
+:focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+	border-radius: var(--radius-control);
+}
+
+/* Skip link */
+.skip-link {
+	position: absolute;
+	left: var(--space-2);
+	top: -60px;
+	z-index: 100;
+	padding: var(--space-2) var(--space-4);
+	background: var(--brand);
+	color: var(--on-brand);
+	border-radius: var(--radius-control);
+	font-weight: 500;
+	transition: top var(--motion-base) var(--ease-out);
+}
+.skip-link:focus {
+	top: var(--space-2);
+	text-decoration: none;
+}
+
+/*
+ * Visually hides a button's text label while keeping it as the accessible name.
+ * Used by responsive toolbars that collapse to icon-only buttons - `display: none`
+ * there would leave the button with no discernible name at all.
+ */
+.label-collapses {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Components                                                          */
+/* ------------------------------------------------------------------ */
+
+.card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-card);
+}
+
+.card-pad {
+	padding: var(--space-4);
+}
+
+/* --- Buttons --- */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	height: var(--control-h);
+	padding: 0 var(--space-3);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius-control);
+	background: var(--surface);
+	color: var(--text-primary);
+	font-family: inherit;
+	font-size: var(--text-14);
+	font-weight: 500;
+	cursor: pointer;
+	white-space: nowrap;
+	transition:
+		background var(--motion-fast) var(--ease-out),
+		border-color var(--motion-fast) var(--ease-out),
+		color var(--motion-fast) var(--ease-out);
+}
+.btn:hover:not(:disabled) {
+	background: var(--surface-subtle);
+	border-color: var(--text-tertiary);
+}
+.btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.btn-primary {
+	background: var(--brand);
+	border-color: var(--brand);
+	color: var(--on-brand);
+}
+.btn-primary:hover:not(:disabled) {
+	background: var(--brand-hover);
+	border-color: var(--brand-hover);
+}
+.btn-danger {
+	background: var(--danger);
+	border-color: var(--danger);
+	color: #fff;
+}
+.btn-danger:hover:not(:disabled) {
+	filter: brightness(0.93);
+}
+.btn-quiet {
+	border-color: transparent;
+	background: transparent;
+	color: var(--text-secondary);
+}
+.btn-quiet:hover:not(:disabled) {
+	background: var(--surface-subtle);
+	border-color: transparent;
+	color: var(--text-primary);
+}
+.btn-sm {
+	height: var(--control-h-sm);
+	padding: 0 var(--space-2);
+	font-size: var(--text-13);
+}
+.btn-icon {
+	width: var(--control-h);
+	padding: 0;
+}
+.btn-icon.btn-sm {
+	width: var(--control-h-sm);
+}
+
+/* --- Form controls --- */
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+.label {
+	font-size: var(--text-13);
+	font-weight: 500;
+	color: var(--text-secondary);
+}
+.help {
+	font-size: var(--text-12);
+	color: var(--text-tertiary);
+}
+.error-text {
+	font-size: var(--text-12);
+	color: var(--danger);
+	display: flex;
+	align-items: center;
+	gap: var(--space-1);
+}
+
+.input,
+.select-trigger,
+.textarea {
+	width: 100%;
+	height: var(--control-h);
+	padding: 0 var(--space-3);
+	border: 1px solid var(--border-strong);
+	border-radius: var(--radius-control);
+	background: var(--surface);
+	color: var(--text-primary);
+	font-family: inherit;
+	font-size: var(--text-14);
+	transition: border-color var(--motion-fast) var(--ease-out);
+}
+.textarea {
+	height: auto;
+	min-height: 72px;
+	padding: var(--space-2) var(--space-3);
+	resize: vertical;
+	line-height: var(--lh-normal);
+}
+.input:hover,
+.textarea:hover {
+	border-color: var(--text-tertiary);
+}
+.input::placeholder,
+.textarea::placeholder {
+	color: var(--text-tertiary);
+}
+.input[aria-invalid='true'],
+.textarea[aria-invalid='true'] {
+	border-color: var(--danger);
+}
+.input:disabled {
+	background: var(--surface-subtle);
+	color: var(--text-tertiary);
+	cursor: not-allowed;
+}
+
+/* --- Pills, badges and status --- */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1);
+	height: 24px;
+	padding: 0 var(--space-2);
+	border-radius: var(--radius-pill);
+	border: 1px solid var(--border);
+	background: var(--surface-subtle);
+	color: var(--text-secondary);
+	font-size: var(--text-12);
+	font-weight: 500;
+	white-space: nowrap;
+}
+/* Pill text sits at 12 px on a tint, so it uses the darker -ink tokens to clear AA. */
+.pill-brand {
+	background: var(--brand-tint);
+	border-color: color-mix(in srgb, var(--brand) 30%, transparent);
+	color: var(--brand);
+}
+.pill-warn {
+	background: var(--saffron-tint);
+	border-color: color-mix(in srgb, var(--saffron) 35%, transparent);
+	color: var(--saffron-ink);
+}
+.pill-danger {
+	background: var(--danger-tint);
+	border-color: color-mix(in srgb, var(--danger) 35%, transparent);
+	color: var(--danger-ink);
+}
+.pill-success {
+	background: var(--success-tint);
+	border-color: color-mix(in srgb, var(--success) 35%, transparent);
+	color: var(--success-ink);
+}
+.pill-info {
+	background: var(--info-tint);
+	border-color: color-mix(in srgb, var(--info) 35%, transparent);
+	color: var(--info-ink);
+}
+
+/* --- Tables --- */
+.table-wrap {
+	overflow-x: auto;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-card);
+	background: var(--surface);
+}
+table.data {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: var(--text-14);
+}
+table.data th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: var(--surface-subtle);
+	border-bottom: 1px solid var(--border);
+	padding: var(--space-2) var(--space-3);
+	text-align: left;
+	font-size: var(--text-12);
+	font-weight: 600;
+	color: var(--text-secondary);
+	white-space: nowrap;
+}
+table.data td {
+	padding: var(--space-2) var(--space-3);
+	border-bottom: 1px solid var(--border);
+	color: var(--text-primary);
+	vertical-align: middle;
+}
+table.data tbody tr:last-child td {
+	border-bottom: none;
+}
+table.data tbody tr {
+	transition: background var(--motion-fast) var(--ease-out);
+}
+table.data tbody tr:hover {
+	background: var(--surface-subtle);
+}
+table.data th.num,
+table.data td.num {
+	text-align: right;
+}
+
+/* --- Panels and overlays --- */
+.popover {
+	background: var(--surface-raised);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-card);
+	box-shadow: var(--shadow-popover);
+}
+
+.empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-12) var(--space-6);
+	text-align: center;
+	color: var(--text-secondary);
+}
+
+/* --- Skeletons --- */
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--surface-subtle) 0%,
+		color-mix(in srgb, var(--surface-subtle) 55%, var(--border)) 50%,
+		var(--surface-subtle) 100%
+	);
+	background-size: 200% 100%;
+	border-radius: var(--radius-control);
+	animation: skeleton-shimmer 1.4s linear infinite;
+}
+@keyframes skeleton-shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+
+/* --- Motion preference --- */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* --- Print stylesheet: used for the Tamil/Devanagari print-to-PDF route --- */
+@media print {
+	.no-print {
+		display: none !important;
+	}
+	body {
+		background: #fff;
+		color: #000;
+	}
+	@page {
+		size: A4 landscape;
+		margin: 10mm;
+	}
+}
