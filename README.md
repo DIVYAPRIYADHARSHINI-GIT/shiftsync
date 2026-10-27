@@ -7,7 +7,7 @@ needs and rules; ShiftSync builds a weekly roster automatically, highlights ever
 violation and understaffed shift, and lets you fix things by drag and drop with live
 validation.
 
-**Live demo:** _see the Live demo section below._
+**Live demo:** https://shiftsync-cyan.vercel.app
 
 ---
 
@@ -342,7 +342,7 @@ one serverless function, so it will run on any static host with a Node function.
 
 ## Live demo
 
-- **Live app:** https://shiftsync-mu.vercel.app
+- **Live app:** https://shiftsync-cyan.vercel.app
 - **Repository:** https://github.com/DIVYAPRIYADHARSHINI-GIT/shiftsync
 
 The live site opens with the Greenleaf Cafe sample data. Everything you then do stays in your
